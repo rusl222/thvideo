@@ -1,0 +1,21 @@
+{
+  "RootDir": "d:\\cams",
+  "Cams": [
+    {
+      "Name": "cam1",
+      "OnvifEventer": {
+        "Host": "192.168.1.64",
+        "User": "user",
+        "Password": "password",
+        "PollingDuration": 5
+      },
+      "Recorder": {
+          "VideoLink": "rtsp://user:password@192.168.1.64:554/Streaming/Channels/101",
+          "RecordsDuration": 20
+      }
+    }
+  ],
+  "VideoServer": {
+    "Host": ":8080"
+  }
+}
