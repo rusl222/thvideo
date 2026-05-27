@@ -84,7 +84,12 @@ func (ev *OnvifEventer) Run(ctx context.Context) {
 					log.Printf("[err] OnvifEventer - %v", err)
 				} else {
 					if time.Since(localTime) < ev.conf.PollingDuration {
-						ev.listener.MotionDetect(localTime)
+						message := mes.Message.Message.Data.Name + ":" + string(mes.Message.Message.Data.Value)
+						log.Print(message)
+						if message == "IsMotion:true" {
+							ev.listener.MotionDetect(localTime)
+						}
+
 					}
 				}
 			}

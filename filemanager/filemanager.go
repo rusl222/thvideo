@@ -35,7 +35,7 @@ func (fm *FileManager) MotionDetect(motionTime time.Time) {
 // if it is older than the duration of the recordfile, it deletes the previous one.
 func (fm *FileManager) NewRecordReady(filename string, recordsDuration time.Duration) {
 	log.Printf("new record ready %s %v", filename, recordsDuration)
-	if time.Since(fm.lastMotionTime) > recordsDuration+5*time.Second {
+	if time.Since(fm.lastMotionTime) > max(recordsDuration+5*time.Second, 45) {
 		fm.deleteLast()
 	}
 	fm.prevFile = filename

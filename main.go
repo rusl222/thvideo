@@ -38,6 +38,7 @@ func main() {
 		<-stop
 		log.Println("Received interrupt signal, shutting down...")
 		cancel()
+		os.Exit(0)
 	}()
 
 	c := conf.Cams[0]
