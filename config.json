@@ -5,12 +5,12 @@
       "Name": "cam1",
       "OnvifEventer": {
         "Host": "192.168.1.64",
-        "User": "user",
-        "Password": "password",
+        "User": "watcher",
+        "Password": "Watch1234",
         "PollingDuration": 5
       },
       "Recorder": {
-          "VideoLink": "rtsp://user:password@192.168.1.64:554/Streaming/Channels/101",
+          "VideoLink": "rtsp://watcher:Watch1234@192.168.1.64:554/Streaming/Channels/101",
           "RecordsDuration": 20
       }
     }

@@ -2,6 +2,7 @@ package onvifeventer
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -25,6 +26,75 @@ func New(conf OnvifEventerConfig, listener MotionEventListener) *OnvifEventer {
 		conf:     conf,
 		listener: listener,
 	}
+}
+
+func (ev *OnvifEventer) Run2(ctx context.Context) {
+	var dev *goonvif.Device
+	var err error
+	var eventLink string
+	step := 1
+
+	for {
+		select {
+		case <-ctx.Done():
+			if eventLink != "" {
+				sdk.Call_Unsubscribe(ctx, dev, eventLink, event.Unsubscribe{})
+			}
+			return
+		default:
+			switch step {
+			case 1:
+				//Getting an camera instance
+				dev, err = goonvif.NewDevice(goonvif.DeviceParams{
+					Xaddr:      ev.conf.Host,
+					Username:   ev.conf.User,
+					Password:   ev.conf.Password,
+					HttpClient: new(http.Client),
+				})
+				if err != nil {
+					log.Printf("[err] OnvifEventer - %v\t Sleeping a minute", err)
+				} else {
+					step = 2
+					continue
+				}
+				time.Sleep(time.Minute)
+			case 2:
+				//Preparing commands
+				resp, err := sdk.Call_CreatePullPointSubscription(ctx, dev, event.CreatePullPointSubscription{})
+
+				if err != nil {
+					log.Printf("[err] OnvifEventer - %v\t Sleeping a minute", err)
+				} else {
+					eventLink = string(resp.SubscriptionReference.Address)
+					step = 3
+					continue
+				}
+				time.Sleep(time.Minute)
+			case 3:
+				resp2, err := sdk.Call_PullMessages(ctx, dev, eventLink, event.PullMessages{MessageLimit: 1})
+				if err != nil {
+					log.Printf("[err] OnvifEventer - %v", err)
+				}
+
+				if resp2.CurrentTime == "" {
+					step = 1
+					continue
+				}
+
+				for _, mes := range resp2.NotificationMessage {
+					message := mes.Message.Message.Data.Name + ":" + string(mes.Message.Message.Data.Value)
+					log.Print(message)
+					if message == "IsMotion:true" {
+						ev.listener.MotionDetect(time.Now())
+					}
+
+				}
+				time.Sleep(ev.conf.PollingDuration)
+			}
+		}
+
+	}
+
 }
 
 func (ev *OnvifEventer) Run(ctx context.Context) {
@@ -83,13 +153,14 @@ func (ev *OnvifEventer) Run(ctx context.Context) {
 				if err != nil {
 					log.Printf("[err] OnvifEventer - %v", err)
 				} else {
-					if time.Since(localTime) < ev.conf.PollingDuration {
+					// если прошло менее периода то обработать
+					fmt.Printf("%s %d %d", localTime, time.Since(localTime), ev.conf.PollingDuration)
+					if time.Since(localTime) < ev.conf.PollingDuration*5 {
 						message := mes.Message.Message.Data.Name + ":" + string(mes.Message.Message.Data.Value)
 						log.Print(message)
 						if message == "IsMotion:true" {
 							ev.listener.MotionDetect(localTime)
 						}
-
 					}
 				}
 			}

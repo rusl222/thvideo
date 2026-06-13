@@ -67,7 +67,7 @@ func (rec *Recorder) StartRecord(ctx context.Context) error {
 				log.Printf("[err] %v", err)
 				time.Sleep(rec.conf.RecordsDuration)
 			} else {
-				rec.listener.NewRecordReady(fileName, rec.conf.RecordsDuration)
+				go rec.listener.NewRecordReady(fileName, rec.conf.RecordsDuration)
 			}
 		}
 	}

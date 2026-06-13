@@ -1,0 +1,32 @@
+testData = [
+    {Cam:{
+        Name:"cam1", 
+        files:[
+        {StartVideo:"12:12:43",LengthVideo:"20",Link:"./cam1/2025-01-20/12_12_43.mp4"},
+        {StartVideo:"12:13:04",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_04.mp4"},
+        {StartVideo:"12:13:24",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_24.mp4"},
+        {StartVideo:"12:13:45",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_45.mp4"},
+        {StartVideo:"12:14:26",LengthVideo:"20",Link:"./cam1/2025-01-20/12_14_26.mp4"},
+        {StartVideo:"12:14:47",LengthVideo:"20",Link:"./cam1/2025-01-20/12_14_47.mp4"},
+        {StartVideo:"12:15:28",LengthVideo:"20",Link:"./cam1/2025-01-20/12_15_28.mp4"},
+        {StartVideo:"12:15:49",LengthVideo:"20",Link:"./cam1/2025-01-20/12_15_49.mp4"},
+        {StartVideo:"12:09:40",LengthVideo:"20",Link:"./cam1/2025-01-20/12_09_40.mp4"},
+        {StartVideo:"12:10:01",LengthVideo:"20",Link:"./cam1/2025-01-20/12_10_01.mp4"}
+        ]}
+    },
+    {Cam:{
+        Name:"cam2", 
+        files:[
+        {StartVideo:"12:13:43",LengthVideo:"20",Link:"./cam1/2025-01-20/12_12_43.mp4"},
+        {StartVideo:"12:14:04",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_04.mp4"},
+        {StartVideo:"12:14:24",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_24.mp4"},
+        {StartVideo:"12:14:45",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_45.mp4"},
+        {StartVideo:"12:15:26",LengthVideo:"20",Link:"./cam1/2025-01-20/12_14_26.mp4"},
+        {StartVideo:"12:15:47",LengthVideo:"20",Link:"./cam1/2025-01-20/12_14_47.mp4"},
+        {StartVideo:"12:16:28",LengthVideo:"20",Link:"./cam1/2025-01-20/12_15_28.mp4"},
+        {StartVideo:"12:16:49",LengthVideo:"20",Link:"./cam1/2025-01-20/12_15_49.mp4"},
+        {StartVideo:"12:09:40",LengthVideo:"20",Link:"./cam1/2025-01-20/12_09_40.mp4"},
+        {StartVideo:"12:10:01",LengthVideo:"20",Link:"./cam1/2025-01-20/12_10_01.mp4"}
+        ]}
+    }
+]

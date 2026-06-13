@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Timeline Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+
+        .body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: dimgray;
+        }
+
+        .bar {
+            fill: steelblue;
+        }
+        .bar:hover {
+            fill: orange;
+        }
+        .timeline{
+            width: 100%;
+            overflow-x: scroll;
+        }    
+        </style>
+</head>
+<body stile="background-color:dimgray">
+    <div class="timeline">
+    <svg id="timeline" width="1440" height="20"></svg>
+    </div>
+    <script>
+        const testData = [
+    {Cam:{
+        Name:"cam1", 
+        files:[
+        {StartVideo:"12:12:43",LengthVideo:"20",Link:"./cam1/2025-01-20/12_12_43.mp4"},
+        {StartVideo:"12:13:04",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_04.mp4"},
+        {StartVideo:"12:13:24",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_24.mp4"},
+        {StartVideo:"12:13:45",LengthVideo:"20",Link:"./cam1/2025-01-20/12_13_45.mp4"},
+        {StartVideo:"12:14:26",LengthVideo:"20",Link:"./cam1/2025-01-20/12_14_26.mp4"},
+        {StartVideo:"12:14:47",LengthVideo:"20",Link:"./cam1/2025-01-20/12_14_47.mp4"},
+        {StartVideo:"12:15:28",LengthVideo:"20",Link:"./cam1/2025-01-20/12_15_28.mp4"},
+        {StartVideo:"12:15:49",LengthVideo:"20",Link:"./cam1/2025-01-20/12_15_49.mp4"},
+        {StartVideo:"12:09:40",LengthVideo:"20",Link:"./cam1/2025-01-20/12_09_40.mp4"},
+        {StartVideo:"12:10:01",LengthVideo:"20",Link:"./cam1/2025-01-20/12_10_01.mp4"}
+        ]}
+    },
+    {Cam:{
+        Name:"cam2", 
+        files:[
+        {StartVideo:"12:13:43",LengthVideo:20,Link:"./cam1/2025-01-20/12_12_43.mp4"},
+        {StartVideo:"12:14:04",LengthVideo:20,Link:"./cam1/2025-01-20/12_13_04.mp4"},
+        {StartVideo:"12:14:24",LengthVideo:20,Link:"./cam1/2025-01-20/12_13_24.mp4"},
+        {StartVideo:"12:14:45",LengthVideo:20,Link:"./cam1/2025-01-20/12_13_45.mp4"},
+        {StartVideo:"12:15:26",LengthVideo:20,Link:"./cam1/2025-01-20/12_14_26.mp4"},
+        {StartVideo:"12:15:47",LengthVideo:20,Link:"./cam1/2025-01-20/12_14_47.mp4"},
+        {StartVideo:"12:16:28",LengthVideo:20,Link:"./cam1/2025-01-20/12_15_28.mp4"},
+        {StartVideo:"12:16:49",LengthVideo:20,Link:"./cam1/2025-01-20/12_15_49.mp4"},
+        {StartVideo:"12:09:40",LengthVideo:20,Link:"./cam1/2025-01-20/12_09_40.mp4"},
+        {StartVideo:"12:10:01",LengthVideo:20,Link:"./cam1/2025-01-20/12_10_01.mp4"}
+        ]}
+    }
+];
+
+        const svg = d3.select("#timeline");
+        const width = +svg.attr("width");
+        const height = +svg.attr("height");
+        const margin = 0;
+        const xScale = d3.scaleLinear().domain([0, 24 * 60 *60]).range([0, width]);
+
+
+
+        const camHeight = 10;
+        const camMargin = 0;
+
+        testData.forEach((camData, camIndex) => {
+            const camGroup = svg.append("g")
+                .attr("transform", `translate(0, ${camIndex * (camHeight + camMargin)})`);
+
+            camData.Cam.files.forEach(file => {
+                const startTime = file.StartVideo.split(':').reduce((acc, time) => (60 * acc) + +time);
+                const lengthTime = +file.LengthVideo;
+
+                camGroup.append("rect")
+                    .attr("class", "bar")
+                    .attr("x", xScale(startTime))
+                    .attr("y", 0)
+                    .attr("width", xScale(lengthTime) - xScale(0))
+                    .attr("height", camHeight)
+                    .on("click", () => {
+                        const event = new CustomEvent("ElementChecked", { detail: file.Link });
+                        window.dispatchEvent(event);
+                    });
+            });
+        });
+           
+        const xAxis = d3.axisBottom(xScale)
+            .ticks(24)
+            .tickFormat(d => `${Math.floor(d / 3600)}:00`);
+
+        svg.append("g")
+            .attr("transform", `translate(0, ${height - margin.bottom})`)
+            .call(xAxis)
+            .selectAll("text")
+            .style("font-size", "3px");
+
+
+        window.addEventListener("ElementChecked", (e) => {
+            console.log("ElementChecked event triggered with link:", e.detail);
+        });
+    </script>
+</body>
+</html>

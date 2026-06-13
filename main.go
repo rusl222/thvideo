@@ -47,7 +47,7 @@ func main() {
 
 	// Start the onvif eventer
 	onv := onvifeventer.New(c.OnvifEventer, fm)
-	go onv.Run(ctx)
+	go onv.Run2(ctx)
 
 	// Start the recorder
 	rec := recorder.New(c.Recorder, fm)
